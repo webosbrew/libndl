@@ -41,6 +41,11 @@ private:
     static GstFlowReturn audioNewPreroll(GstAppSink *appsink, void *userData);
     static GstFlowReturn audioNewSample(GstAppSink *appsink, void *userData);
 
+    static void videoEos(GstAppSink *appsink, void *userData);
+    static GstFlowReturn videoNewPreroll(GstAppSink *appsink, void *userData);
+    static GstFlowReturn videoNewSample(GstAppSink *appsink, void *userData);
+
     GstElement *m_Pipeline;
     GstElement *m_AudioSink;
+    GstElement *m_VideoSink;
 };
