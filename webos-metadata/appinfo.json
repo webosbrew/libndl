@@ -1,0 +1,10 @@
+{
+  "id": "org.webosbrew.sample.ndl-directmedia",
+  "version": "0.0.1",
+  "vendor": "Mariotaku Lee",
+  "type": "native",
+  "main": "sample",
+  "title": "NDL DirectMedia",
+  "icon": "icon.png",
+  "nativeLifeCycleInterfaceVersion": 2
+}
