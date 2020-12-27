@@ -23,10 +23,17 @@ WebOSWindow {
         anchors.fill: parent
         focus: true
 
-        PunchThrough {
-            x: 0; y: 0; z: -1
-            width: parent.width
-            height: parent.height
+        Rectangle {
+            anchors.fill: parent
+
+            PunchThrough {
+                id: punch
+                x: 0; y: 0; z: -1
+                width: parent.width
+                height: parent.height
+
+                visible: true
+            }
         }
 
         Keys.onPressed: {

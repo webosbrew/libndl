@@ -29,10 +29,28 @@ enum NDL_DIRECTAUDIO_SAMPLING_FREQ_
     NDL_DIRECTAUDIO_SAMPLING_FREQ_48KHZ = 10,
 };
 
+static NDL_DIRECTAUDIO_SAMPLING_FREQ_ NDL_DIRECTAUDIO_SAMPLING_FREQ_OF(int hertz)
+{
+    switch (hertz)
+    {
+        case 4000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_4KHZ;
+        case 8000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_8KHZ;
+        case 11025: return NDL_DIRECTAUDIO_SAMPLING_FREQ_11KHZ;
+        case 12000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_12KHZ;
+        case 16000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_16KHZ;
+        case 22050: return NDL_DIRECTAUDIO_SAMPLING_FREQ_22KHZ;
+        case 24000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_24KHZ;
+        case 32000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_32KHZ;
+        case 44100: return NDL_DIRECTAUDIO_SAMPLING_FREQ_44KHZ;
+        case 48000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_48KHZ;
+        default: return NDL_DIRECTAUDIO_SAMPLING_FREQ_UNK;
+    }
+}
+
 enum NDL_DIRECTMEDIA_APP_STATE_
 {
-    NDL_DIRECTMEDIA_APP_STATE_FOREGROUND = 0,
-    NDL_DIRECTMEDIA_APP_STATE_BACKGROUND = 1
+    NDL_DIRECTMEDIA_APP_STATE_BACKGROUND = -1,
+    NDL_DIRECTMEDIA_APP_STATE_FOREGROUND = 0
 };
 
 typedef void (*NDLInitCallback)(char *type);
@@ -65,7 +83,7 @@ typedef struct
  */
 int NDL_DirectMediaInit(char *appid, NDLInitCallback cb);
 char *NDL_DirectMediaGetError();
-int NDL_DirectMediaSetAppState(int state);
+int NDL_DirectMediaSetAppState(NDL_DIRECTMEDIA_APP_STATE_ state);
 void NDL_DirectMediaQuit();
 
 int NDL_DirectAudioOpen(NDL_DIRECTAUDIO_DATA_INFO *info);

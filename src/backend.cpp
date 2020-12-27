@@ -12,6 +12,16 @@ Backend::Backend(QObject *parent)
     : QObject(parent),
       m_Pipeline(0)
 {
+    
+    char appid[] = "org.webosbrew.sample.ndl-directmedia";
+
+    if (NDL_DirectMediaInit(appid, NULL)) {
+        qDebug() << NDL_DirectMediaGetError();
+        return;
+    }
+
+    NDL_DirectMediaSetAppState(NDL_DIRECTMEDIA_APP_STATE_FOREGROUND);
+
     m_Pipeline = gst_parse_launch("filesrc location=./assets/test.mp4 ! qtdemux name=demux \
     demux.audio_0 ! queue ! decodebin ! audioconvert ! audio/x-raw,format=S16LE ! appsink name=audsink \
     demux.video_0 ! queue ! h264parse ! appsink name=vidsink",
@@ -42,12 +52,12 @@ Backend::Backend(QObject *parent)
 
 Backend::~Backend()
 {
+    NDL_DirectMediaQuit();
 }
 
 void Backend::test()
 {
     Q_ASSERT(gst_element_set_state(m_Pipeline, GST_STATE_PLAYING));
-    NDL_DirectMediaSetAppState(-1);
 }
 
 void Backend::playCb(void *arg)
@@ -65,8 +75,9 @@ GstFlowReturn Backend::audioNewPreroll(GstAppSink *appsink, gpointer user_data)
     GstSample *preroll = gst_app_sink_pull_preroll(appsink);
     GstCaps *caps = gst_sample_get_caps(preroll);
     GstStructure *cap = gst_caps_get_structure(caps, 0);
-    int channels = 0;
+    int channels = 0, rate = 0;
     Q_ASSERT(gst_structure_get_int(cap, "channels", &channels));
+    Q_ASSERT(gst_structure_get_int(cap, "rate", &rate));
 
     qDebug() << gst_caps_to_string(caps);
 
@@ -78,7 +89,7 @@ GstFlowReturn Backend::audioNewPreroll(GstAppSink *appsink, gpointer user_data)
         .lowerThreshold = 16,
         .channel = NDL_DIRECTAUDIO_CH_MAIN,
         .srcType = NDL_DIRECTAUDIO_SRC_TYPE_PCMMC,
-        .samplingFreq = NDL_DIRECTAUDIO_SAMPLING_FREQ_48KHZ};
+        .samplingFreq = NDL_DIRECTAUDIO_SAMPLING_FREQ_OF(rate)};
     NDL_DirectAudioOpen(&info);
 
     gst_sample_unref(preroll);
