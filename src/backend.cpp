@@ -1,4 +1,3 @@
-#include <string.h>
 #include <QDebug>
 
 #include "backend.h"
@@ -23,8 +22,8 @@ Backend::Backend(QObject *parent)
     NDL_DirectMediaSetAppState(NDL_DIRECTMEDIA_APP_STATE_FOREGROUND);
 
     m_Pipeline = gst_parse_launch("filesrc location=./assets/test.mp4 ! qtdemux name=demux \
-    demux.audio_0 ! queue ! decodebin ! audioconvert ! audio/x-raw,format=S16LE ! appsink name=audsink \
-    demux.video_0 ! queue ! h264parse ! appsink name=vidsink",
+    demux.audio_0 ! queue ! aacparse ! audio/mpeg,mpegversion=4,stream-format=adts ! appsink name=audsink \
+    demux.video_0 ! queue ! h264parse config-interval=-1 ! video/x-h264,stream-format=byte-stream,alignment=nal ! appsink name=vidsink",
                                   NULL);
 
     Q_ASSERT(m_Pipeline);
@@ -88,7 +87,7 @@ GstFlowReturn Backend::audioNewPreroll(GstAppSink *appsink, gpointer user_data)
         .upperThreshold = 48,
         .lowerThreshold = 16,
         .channel = NDL_DIRECTAUDIO_CH_MAIN,
-        .srcType = NDL_DIRECTAUDIO_SRC_TYPE_PCMMC,
+        .srcType = NDL_DIRECTAUDIO_SRC_TYPE_AAC,
         .samplingFreq = NDL_DIRECTAUDIO_SAMPLING_FREQ_OF(rate)};
     NDL_DirectAudioOpen(&info);
 
@@ -102,14 +101,12 @@ GstFlowReturn Backend::audioNewSample(GstAppSink *appsink, gpointer user_data)
 
     GstBuffer *buf = gst_sample_get_buffer(sample);
 
-    gsize bufsize = gst_buffer_get_size(buf);
-    gpointer rawbuf = malloc(bufsize);
+    GstMapInfo info;
+    gst_buffer_map(buf, &info, GST_MAP_READ);
 
-    gst_buffer_extract(buf, 0, rawbuf, bufsize);
+    NDL_DirectAudioPlay(info.data, info.size);
 
-    NDL_DirectAudioPlay(rawbuf, bufsize);
-
-    free(rawbuf);
+    gst_buffer_unmap(buf, &info);
     gst_sample_unref(sample);
     return GST_FLOW_OK;
 }
@@ -145,14 +142,12 @@ GstFlowReturn Backend::videoNewSample(GstAppSink *appsink, gpointer user_data)
 
     GstBuffer *buf = gst_sample_get_buffer(sample);
 
-    gsize bufsize = gst_buffer_get_size(buf);
-    gpointer rawbuf = malloc(bufsize);
+    GstMapInfo info;
+    gst_buffer_map(buf, &info, GST_MAP_READ);
 
-    gst_buffer_extract(buf, 0, rawbuf, bufsize);
+    NDL_DirectVideoPlay(info.data, info.size);
 
-    NDL_DirectVideoPlay(rawbuf, bufsize);
-
-    free(rawbuf);
+    gst_buffer_unmap(buf, &info);
     gst_sample_unref(sample);
     return GST_FLOW_OK;
 }

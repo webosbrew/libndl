@@ -5,18 +5,22 @@ enum NDL_DIRECTAUDIO_CH_
     NDL_DIRECTAUDIO_CH_MAIN = 0,
     NDL_DIRECTAUDIO_CH_SUB = 1
 };
+typedef enum NDL_DIRECTAUDIO_CH_ NDL_DIRECTAUDIO_CH_T;
+
 enum NDL_DIRECTAUDIO_SRC_TYPE_
 {
     /** PCM Mix Channel */
-    NDL_DIRECTAUDIO_SRC_TYPE_PCMMC = 1,
-    /** They are all AAC? I'm not sure */
-    NDL_DIRECTAUDIO_SRC_TYPE_AAC_2 = 2,
-    NDL_DIRECTAUDIO_SRC_TYPE_AAC_3 = 3,
-    NDL_DIRECTAUDIO_SRC_TYPE_AAC_4 = 4
+    NDL_DIRECTAUDIO_SRC_TYPE_PCM = 1,
+    NDL_DIRECTAUDIO_SRC_TYPE_AC3 = 2,
+    /** AAC. audio/mpeg,mpegversion=4,stream-format=adts */
+    NDL_DIRECTAUDIO_SRC_TYPE_AAC = 3,
+    NDL_DIRECTAUDIO_SRC_TYPE_WTF = 4
 };
+typedef enum NDL_DIRECTAUDIO_SRC_TYPE_ NDL_DIRECTAUDIO_SRC_TYPE_T;
+
 enum NDL_DIRECTAUDIO_SAMPLING_FREQ_
 {
-    NDL_DIRECTAUDIO_SAMPLING_FREQ_UNK = 0,
+    NDL_DIRECTAUDIO_SAMPLING_FREQ_NONE = 0,
     NDL_DIRECTAUDIO_SAMPLING_FREQ_4KHZ = 1,
     NDL_DIRECTAUDIO_SAMPLING_FREQ_8KHZ = 2,
     NDL_DIRECTAUDIO_SAMPLING_FREQ_11KHZ = 3,
@@ -28,46 +32,59 @@ enum NDL_DIRECTAUDIO_SAMPLING_FREQ_
     NDL_DIRECTAUDIO_SAMPLING_FREQ_44KHZ = 9,
     NDL_DIRECTAUDIO_SAMPLING_FREQ_48KHZ = 10,
 };
+typedef enum NDL_DIRECTAUDIO_SAMPLING_FREQ_ NDL_DIRECTAUDIO_SAMPLING_FREQ_T;
 
-static NDL_DIRECTAUDIO_SAMPLING_FREQ_ NDL_DIRECTAUDIO_SAMPLING_FREQ_OF(int hertz)
+static NDL_DIRECTAUDIO_SAMPLING_FREQ_T NDL_DIRECTAUDIO_SAMPLING_FREQ_OF(int hertz)
 {
     switch (hertz)
     {
-        case 4000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_4KHZ;
-        case 8000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_8KHZ;
-        case 11025: return NDL_DIRECTAUDIO_SAMPLING_FREQ_11KHZ;
-        case 12000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_12KHZ;
-        case 16000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_16KHZ;
-        case 22050: return NDL_DIRECTAUDIO_SAMPLING_FREQ_22KHZ;
-        case 24000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_24KHZ;
-        case 32000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_32KHZ;
-        case 44100: return NDL_DIRECTAUDIO_SAMPLING_FREQ_44KHZ;
-        case 48000: return NDL_DIRECTAUDIO_SAMPLING_FREQ_48KHZ;
-        default: return NDL_DIRECTAUDIO_SAMPLING_FREQ_UNK;
+    case 4000:
+        return NDL_DIRECTAUDIO_SAMPLING_FREQ_4KHZ;
+    case 8000:
+        return NDL_DIRECTAUDIO_SAMPLING_FREQ_8KHZ;
+    case 11025:
+        return NDL_DIRECTAUDIO_SAMPLING_FREQ_11KHZ;
+    case 12000:
+        return NDL_DIRECTAUDIO_SAMPLING_FREQ_12KHZ;
+    case 16000:
+        return NDL_DIRECTAUDIO_SAMPLING_FREQ_16KHZ;
+    case 22050:
+        return NDL_DIRECTAUDIO_SAMPLING_FREQ_22KHZ;
+    case 24000:
+        return NDL_DIRECTAUDIO_SAMPLING_FREQ_24KHZ;
+    case 32000:
+        return NDL_DIRECTAUDIO_SAMPLING_FREQ_32KHZ;
+    case 44100:
+        return NDL_DIRECTAUDIO_SAMPLING_FREQ_44KHZ;
+    case 48000:
+        return NDL_DIRECTAUDIO_SAMPLING_FREQ_48KHZ;
+    default:
+        return NDL_DIRECTAUDIO_SAMPLING_FREQ_NONE;
     }
 }
 
 enum NDL_DIRECTMEDIA_APP_STATE_
 {
-    NDL_DIRECTMEDIA_APP_STATE_BACKGROUND = -1,
-    NDL_DIRECTMEDIA_APP_STATE_FOREGROUND = 0
+    NDL_DIRECTMEDIA_APP_STATE_FOREGROUND,
+    NDL_DIRECTMEDIA_APP_STATE_BACKGROUND,
 };
+typedef enum NDL_DIRECTMEDIA_APP_STATE_ NDL_DIRECTMEDIA_APP_STATE_T;
 
 typedef void (*NDLInitCallback)(char *type);
 
 typedef struct
 {
-    int numChannel;
-    int bitPerSample;
+    unsigned int numChannel;
+    unsigned int bitPerSample;
     /**
      * @brief Nodelay setting - On(1)/Off(0)
      */
     unsigned int nodelay;
     unsigned int upperThreshold;
     unsigned int lowerThreshold;
-    NDL_DIRECTAUDIO_CH_ channel;
-    NDL_DIRECTAUDIO_SRC_TYPE_ srcType;
-    NDL_DIRECTAUDIO_SAMPLING_FREQ_ samplingFreq;
+    NDL_DIRECTAUDIO_CH_T channel;
+    NDL_DIRECTAUDIO_SRC_TYPE_T srcType;
+    NDL_DIRECTAUDIO_SAMPLING_FREQ_T samplingFreq;
 } NDL_DIRECTAUDIO_DATA_INFO;
 
 typedef struct
@@ -83,7 +100,7 @@ typedef struct
  */
 int NDL_DirectMediaInit(char *appid, NDLInitCallback cb);
 char *NDL_DirectMediaGetError();
-int NDL_DirectMediaSetAppState(NDL_DIRECTMEDIA_APP_STATE_ state);
+int NDL_DirectMediaSetAppState(NDL_DIRECTMEDIA_APP_STATE_T state);
 void NDL_DirectMediaQuit();
 
 int NDL_DirectAudioOpen(NDL_DIRECTAUDIO_DATA_INFO *info);

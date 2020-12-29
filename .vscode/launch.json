@@ -18,6 +18,7 @@
                 "/usr/src/debug/lib32-pmloglib": "/opt/webos-sdk-x86_64/1.0.g/sysroots/armv7a-neon-webos-linux-gnueabi/usr/src/debug/pmloglib",
                 "/usr/src/debug": "/opt/webos-sdk-x86_64/1.0.g/sysroots/armv7a-neon-webos-linux-gnueabi/usr/src/debug"
             },
+            "preLaunchTask": "NDL Sample Install",
             "ssh": {
                 "host": "192.168.4.104",
                 "port": 9922,
