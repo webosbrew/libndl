@@ -3,44 +3,30 @@ cmake_minimum_required(VERSION 3.1)
 # Add folder where are supportive functions
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/utils/cmake)
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lpthread")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 include(WebOSPackage)
 
 add_subdirectory(ndl)
 
-project(sample LANGUAGES C CXX)
+project(sample LANGUAGES C)
 
 find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(Wayland REQUIRED IMPORTED_TARGET wayland-webos-client wayland-egl)
+pkg_check_modules(OpenGL REQUIRED IMPORTED_TARGET egl glesv2)
 pkg_check_modules(GStreamer REQUIRED IMPORTED_TARGET gstreamer-1.0 gstreamer-app-1.0)
+pkg_check_modules(json REQUIRED IMPORTED_TARGET json-c)
 
-find_package(Qt5 REQUIRED COMPONENTS Core Quick REQUIRED)
-set(BASE_SRC
-    "src/main.cpp"
-    "src/backend.cpp"
-)
-
-set(QRC_SRC
-    "src/qml.qrc"
-)
-
-add_executable(sample ${BASE_SRC} ${QRC_SRC})
+add_executable(sample src/main.c src/gst_sample.c)
 
 target_compile_definitions(sample PUBLIC "$<$<CONFIG:DEBUG>:DEBUG>")
 target_include_directories(sample PRIVATE ${CMAKE_SOURCE_DIR}/utils/include)
 
-set_target_properties(sample PROPERTIES
-    CXX_STANDARD                11
-    CXX_STANDARD_REQUIRED       ON
-    AUTOMOC                     ON
-    AUTORCC                     ON
-)
-
 target_link_libraries(sample PRIVATE
- Qt5::Core Qt5::Quick # QT libraries
- PkgConfig::GStreamer
+ PkgConfig::Wayland PkgConfig::OpenGL PkgConfig::GStreamer
  NDL_directmedia
+ PkgConfig::json
 )
 
 set_target_properties(sample PROPERTIES
