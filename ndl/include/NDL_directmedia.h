@@ -98,7 +98,7 @@ typedef struct
  * 
  * @return 0 if succeeded, -1 otherwise.
  */
-int NDL_DirectMediaInit(char *appid, NDLInitCallback cb);
+int NDL_DirectMediaInit(const char *appid, NDLInitCallback cb);
 char *NDL_DirectMediaGetError();
 int NDL_DirectMediaSetAppState(NDL_DIRECTMEDIA_APP_STATE_T state);
 void NDL_DirectMediaQuit();

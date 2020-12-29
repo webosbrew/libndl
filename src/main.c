@@ -43,6 +43,8 @@ EGLConfig g_pstEglConfig = NULL;
 EGLSurface g_pstEglSurface = NULL;
 EGLContext g_pstEglContext = NULL;
 
+static const char APPID[] = "org.webosbrew.sample.ndl-directmedia";
+
 static int exit_requested_;
 
 static void finalize();
@@ -154,7 +156,7 @@ static void getWaylandServer()
         exit(1);
     }
     wl_webos_shell_surface_add_listener(g_pstWebosShellSurface, &s_pstWebosShellListener, g_pstDisplay);
-    wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "appId", (getenv("APP_ID") ? getenv("APP_ID") : "com.sample.waylandegl"));
+    wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "appId", (getenv("APPID") ? getenv("APPID") : APPID));
     // for secondary display, set the last parameter as 1
     wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "displayAffinity", (getenv("DISPLAY_ID") ? getenv("DISPLAY_ID") : "0"));
 }
@@ -236,10 +238,9 @@ int main(int argc, char **argv)
     REDIR_STDOUT("ndl-sample");
 
     gst_init(&argc, &argv);
- 
-    char appid[] = "org.webosbrew.sample.ndl-directmedia";
 
-    if (NDL_DirectMediaInit(appid, NULL)) {
+    if (NDL_DirectMediaInit(APPID, NULL))
+    {
         g_error(NDL_DirectMediaGetError(), NULL);
         return -1;
     }
@@ -248,7 +249,6 @@ int main(int argc, char **argv)
     initEgl();
     createWindow();
 
-    
     glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(0, 0, 0, 0);
@@ -257,7 +257,7 @@ int main(int argc, char **argv)
     glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     gst_sample_initialize();
-    while (!exit_requested())
+    while (wl_display_dispatch_pending(g_pstDisplay) != -1 && !exit_requested())
     {
         glClearColor(0, 0, 0, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
