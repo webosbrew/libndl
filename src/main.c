@@ -90,8 +90,7 @@ static void webosShellHandlePosition(void *data, struct wl_webos_shell_surface *
 
 static void webosShellHandleClose(void *data, struct wl_webos_shell_surface *wl_webos_shell_surface)
 {
-    finalize();
-    exit(0);
+    request_exit();
 }
 
 static void webosShellHandleExpose(void *data, struct wl_webos_shell_surface *wl_webos_shell_surface, struct wl_array *rectangles)
