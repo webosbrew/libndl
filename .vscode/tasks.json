@@ -4,19 +4,18 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "NDL Sample Install",
+            "label": "Install",
             "type": "shell",
             "command": [
                 "ares-install -d hometv ${workspaceFolder}/build/org.webosbrew.sample.ndl-directmedia_0.0.1_arm.ipk"
             ],
-            "presentation": {
-                "echo": true,
-                "reveal": "silent",
-                "focus": false,
-                "panel": "shared",
-                "showReuseMessage": true,
-                "clear": false
-            }
+        },
+        {
+            "label": "Launch",
+            "type": "shell",
+            "command": [
+                "ares-launch -d hometv org.webosbrew.sample.ndl-directmedia"
+            ]
         }
     ]
 }

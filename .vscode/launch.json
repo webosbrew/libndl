@@ -6,28 +6,20 @@
     "configurations": [
         {
             "name": "Debug over SSH",
-            "type": "gdb",
+            "type": "cppdbg",
             "request": "launch",
-            "target": "sample",
+            "program": "${workspaceRoot}/build/sample",
+            "miDebuggerServerAddress": "192.168.4.104:13041",
             "cwd": "${workspaceRoot}",
-            "valuesFormatting": "parseText",
-            "pathSubstitutions": {
+            "sourceFileMap": {
                 "${workspaceFolder}": "/media/developer/apps/usr/palm/applications/org.webosbrew.sample.ndl-directmedia",
                 "/usr/src/debug/lib32-": "/opt/webos-sdk-x86_64/1.0.g/sysroots/armv7a-neon-webos-linux-gnueabi/usr/src/debug/",
                 "/usr/src/debug/lib32-glibc": "/opt/webos-sdk-x86_64/1.0.g/sysroots/armv7a-neon-webos-linux-gnueabi/usr/src/debug/glibc",
                 "/usr/src/debug/lib32-pmloglib": "/opt/webos-sdk-x86_64/1.0.g/sysroots/armv7a-neon-webos-linux-gnueabi/usr/src/debug/pmloglib",
                 "/usr/src/debug": "/opt/webos-sdk-x86_64/1.0.g/sysroots/armv7a-neon-webos-linux-gnueabi/usr/src/debug"
             },
-            "preLaunchTask": "NDL Sample Install",
-            "ssh": {
-                "host": "192.168.4.104",
-                "port": 9922,
-                "forwardX11": false,
-                "cwd": "/media/developer/apps/usr/palm/applications/org.webosbrew.sample.ndl-directmedia",
-                "keyfile": "/home/mariotaku/.ssh/hometv_webos_unlocked",
-                "user": "prisoner",
-                "bootstrap": "source /media/developer/apps/usr/palm/applications/org.webosbrew.sample.ndl-directmedia/assets/debug.env"
-            }
+            "preLaunchTask": "Install & Launch",
+            "MIMode": "gdb",
         }
     ]
 }
