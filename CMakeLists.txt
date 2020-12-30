@@ -36,7 +36,6 @@ set_target_properties(sample PROPERTIES
     WEBOS_APPINFO_ICON ${CMAKE_CURRENT_SOURCE_DIR}/icon.png
     WEBOS_APPINFO_TITLE "NDL Sample"
     WEBOS_APPINFO_EXTRA "nativeLifeCycleInterfaceVersion=2"
-    WEBOS_PACKAGE_ASSETS "assets"
 )
 
 target_webos_package(sample)

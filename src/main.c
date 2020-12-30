@@ -159,6 +159,7 @@ static void getWaylandServer()
     wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "appId", (getenv("APPID") ? getenv("APPID") : APPID));
     // for secondary display, set the last parameter as 1
     wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "displayAffinity", (getenv("DISPLAY_ID") ? getenv("DISPLAY_ID") : "0"));
+    wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "_WEBOS_ACCESS_POLICY_KEYS_BACK", "true");
 }
 
 static void createWindow()
@@ -249,20 +250,12 @@ int main(int argc, char **argv)
     initEgl();
     createWindow();
 
-    glEnable(GL_CULL_FACE);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glClearColor(0, 0, 0, 0);
-    glClearDepthf(1.0f);
-    glColorMask(1, 1, 1, 1);
-    glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     gst_sample_initialize();
     while (wl_display_dispatch_pending(g_pstDisplay) != -1 && !exit_requested())
     {
         glClearColor(0, 0, 0, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         eglSwapBuffers(g_pstEglDisplay, g_pstEglSurface);
-        usleep(16 * 1000);
     }
     gst_sample_finalize();
 

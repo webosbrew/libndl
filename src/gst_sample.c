@@ -17,7 +17,7 @@ int gst_sample_initialize()
     GstStateChangeReturn ret;
 
     GstElement *audiosink, *videosink;
-    pipeline = gst_parse_launch("filesrc location=./assets/test.mp4 ! qtdemux name=demux \
+    pipeline = gst_parse_launch("curlhttpsrc location=http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4 ! qtdemux name=demux \
     demux.audio_0 ! queue ! aacparse ! audio/mpeg,mpegversion=4,stream-format=adts ! appsink name=audsink \
     demux.video_0 ! queue ! h264parse config-interval=-1 ! video/x-h264,stream-format=byte-stream,alignment=nal ! appsink name=vidsink",
                                 NULL);
