@@ -13,4 +13,7 @@ set_target_properties(NDL_directmedia PROPERTIES
     IMPORTED_LOCATION                  ${CMAKE_CURRENT_SOURCE_DIR}/lib/libNDL_directmedia.so.1
 )
 
-add_subdirectory(samples)
+# Don't include samples if used as library
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    add_subdirectory(samples)
+endif()
