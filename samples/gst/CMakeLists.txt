@@ -32,8 +32,3 @@ set_target_properties(sample PROPERTIES
 )
 
 target_webos_package(sample)
-
-add_custom_target(webos-install-sample
-    COMMAND ares-install -d hometv ${CMAKE_CURRENT_BINARY_DIR}/org.webosbrew.sample.ndl-directmedia_0.0.1_arm.ipk
-    DEPENDS webos-package-sample
-)
