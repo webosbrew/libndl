@@ -43,7 +43,7 @@ EGLConfig g_pstEglConfig = NULL;
 EGLSurface g_pstEglSurface = NULL;
 EGLContext g_pstEglContext = NULL;
 
-static const char APPID[] = "org.webosbrew.sample.ndl-directmedia";
+static const char APPID[] = WEBOS_APPID;
 
 static int exit_requested_;
 
@@ -194,7 +194,6 @@ static void initEgl()
         EGL_BLUE_SIZE, 8,
         EGL_ALPHA_SIZE, 8,
         EGL_DEPTH_SIZE, 0x18,
-        EGL_STENCIL_SIZE, 0,
         EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
         EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
         EGL_SAMPLE_BUFFERS, 1,
@@ -235,7 +234,7 @@ static void finalize()
 
 int main(int argc, char **argv)
 {
-    REDIR_STDOUT("ndl-sample");
+    REDIR_STDOUT("ndl-gst-wayland");
 
     gst_init(&argc, &argv);
 
@@ -253,11 +252,13 @@ int main(int argc, char **argv)
     while (wl_display_dispatch_pending(g_pstDisplay) != -1 && !exit_requested())
     {
         glClearColor(0, 0, 0, 0);
-        glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         eglSwapBuffers(g_pstEglDisplay, g_pstEglSurface);
     }
     gst_sample_finalize();
 
+    NDL_DirectMediaQuit();
+    
     finalize();
     exit(0);
 }
