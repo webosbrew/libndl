@@ -33,26 +33,27 @@ int NDL_DirectMediaInit(const char *appid, NDLInitCallback cb)
         _NDL_directmedia_so = dlopen("libNDL_directmedia.so.1", RTLD_NOW);
         if (!_NDL_directmedia_so)
         {
-            _NDL_DirectMediaInit = dlsym(_NDL_directmedia_so, "NDL_DirectMediaInit");
-            _NDL_DirectMediaGetError = dlsym(_NDL_directmedia_so, "NDL_DirectMediaGetError");
-            _NDL_DirectMediaSetAppState = dlsym(_NDL_directmedia_so, "NDL_DirectMediaSetAppState");
-            _NDL_DirectMediaQuit = dlsym(_NDL_directmedia_so, "NDL_DirectMediaQuit");
-            _NDL_DirectAudioOpen = dlsym(_NDL_directmedia_so, "NDL_DirectAudioOpen");
-            _NDL_DirectAudioClose = dlsym(_NDL_directmedia_so, "NDL_DirectAudioClose");
-            _NDL_DirectAudioPause = dlsym(_NDL_directmedia_so, "NDL_DirectAudioPause");
-            _NDL_DirectAudioPlay = dlsym(_NDL_directmedia_so, "NDL_DirectAudioPlay");
-            _NDL_DirectAudioResume = dlsym(_NDL_directmedia_so, "NDL_DirectAudioResume");
-            _NDL_DirectAudioCheckBufferSize = dlsym(_NDL_directmedia_so, "NDL_DirectAudioCheckBufferSize");
-            _NDL_DirectVideoOpen = dlsym(_NDL_directmedia_so, "NDL_DirectVideoOpen");
-            _NDL_DirectVideoClose = dlsym(_NDL_directmedia_so, "NDL_DirectVideoClose");
-            _NDL_DirectVideoPlay = dlsym(_NDL_directmedia_so, "NDL_DirectVideoPlay");
-            _NDL_DirectVideoPlayWithCallback = dlsym(_NDL_directmedia_so, "NDL_DirectVideoPlayWithCallback");
-            _NDL_DirectVideoStop = dlsym(_NDL_directmedia_so, "NDL_DirectVideoStop");
-            _NDL_DirectVideoSetArea = dlsym(_NDL_directmedia_so, "NDL_DirectVideoSetArea");
-            _NDL_DirectVideoSetCallback = dlsym(_NDL_directmedia_so, "NDL_DirectVideoSetCallback");
             return -1;
         }
+        _NDL_DirectMediaInit = dlsym(_NDL_directmedia_so, "NDL_DirectMediaInit");
+        _NDL_DirectMediaGetError = dlsym(_NDL_directmedia_so, "NDL_DirectMediaGetError");
+        _NDL_DirectMediaSetAppState = dlsym(_NDL_directmedia_so, "NDL_DirectMediaSetAppState");
+        _NDL_DirectMediaQuit = dlsym(_NDL_directmedia_so, "NDL_DirectMediaQuit");
+        _NDL_DirectAudioOpen = dlsym(_NDL_directmedia_so, "NDL_DirectAudioOpen");
+        _NDL_DirectAudioClose = dlsym(_NDL_directmedia_so, "NDL_DirectAudioClose");
+        _NDL_DirectAudioPause = dlsym(_NDL_directmedia_so, "NDL_DirectAudioPause");
+        _NDL_DirectAudioPlay = dlsym(_NDL_directmedia_so, "NDL_DirectAudioPlay");
+        _NDL_DirectAudioResume = dlsym(_NDL_directmedia_so, "NDL_DirectAudioResume");
+        _NDL_DirectAudioCheckBufferSize = dlsym(_NDL_directmedia_so, "NDL_DirectAudioCheckBufferSize");
+        _NDL_DirectVideoOpen = dlsym(_NDL_directmedia_so, "NDL_DirectVideoOpen");
+        _NDL_DirectVideoClose = dlsym(_NDL_directmedia_so, "NDL_DirectVideoClose");
+        _NDL_DirectVideoPlay = dlsym(_NDL_directmedia_so, "NDL_DirectVideoPlay");
+        _NDL_DirectVideoPlayWithCallback = dlsym(_NDL_directmedia_so, "NDL_DirectVideoPlayWithCallback");
+        _NDL_DirectVideoStop = dlsym(_NDL_directmedia_so, "NDL_DirectVideoStop");
+        _NDL_DirectVideoSetArea = dlsym(_NDL_directmedia_so, "NDL_DirectVideoSetArea");
+        _NDL_DirectVideoSetCallback = dlsym(_NDL_directmedia_so, "NDL_DirectVideoSetCallback");
     }
+    return (int)_NDL_DirectMediaInit(appid, cb);
 }
 
 char *NDL_DirectMediaGetError()
