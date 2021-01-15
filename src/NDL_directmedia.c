@@ -5,6 +5,7 @@
 typedef void *(*wrapper_func)();
 
 static void *_NDL_directmedia_so = NULL;
+static char *_NDL_directmedia_so_dlerr = NULL;
 
 static wrapper_func _NDL_DirectMediaInit;
 static wrapper_func _NDL_DirectMediaGetError;
@@ -33,6 +34,7 @@ int NDL_DirectMediaInit(const char *appid, NDLInitCallback cb)
         _NDL_directmedia_so = dlopen("libNDL_directmedia.so.1", RTLD_NOW);
         if (!_NDL_directmedia_so)
         {
+            _NDL_directmedia_so_dlerr = dlerror();
             return -1;
         }
         _NDL_DirectMediaInit = dlsym(_NDL_directmedia_so, "NDL_DirectMediaInit");
@@ -58,6 +60,10 @@ int NDL_DirectMediaInit(const char *appid, NDLInitCallback cb)
 
 char *NDL_DirectMediaGetError()
 {
+    if (!_NDL_directmedia_so)
+    {
+        return _NDL_directmedia_so_dlerr;
+    }
     return _NDL_DirectMediaGetError();
 }
 
