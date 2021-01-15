@@ -1,8 +1,5 @@
-cmake_minimum_required(VERSION 3.0)
-project(libndl)
-
-# Add folder where are supportive functions
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/utils/cmake)
+cmake_minimum_required(VERSION 3.6)
+project(libndl C)
 
 set(PROJECT_NAME "libndl")
 set(PROJECT_DESCRIPTION "Native API Development Library for webOS")
@@ -30,7 +27,7 @@ set_target_properties(NDL_directmedia PROPERTIES
     SOVERSION             ${PROJECT_VERSION_MAJOR}
 )
 
-target_include_directories(NDL_directmedia PUBLIC
+target_include_directories(NDL_directmedia SYSTEM PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
     "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>"
@@ -45,6 +42,9 @@ install(TARGETS NDL_directmedia
     ARCHIVE       DESTINATION "${LIB_INSTALL_DIR}"
     PUBLIC_HEADER DESTINATION "${INCLUDE_INSTALL_DIR}"
 )
+
+# Add folder where are supportive functions
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/utils/cmake)
 
 # Don't include samples if used as library
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
