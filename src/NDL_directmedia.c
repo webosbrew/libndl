@@ -22,10 +22,8 @@ static wrapper_func _NDL_DirectAudioCheckBufferSize;
 static wrapper_func _NDL_DirectVideoOpen;
 static wrapper_func _NDL_DirectVideoClose;
 static wrapper_func _NDL_DirectVideoPlay;
-static wrapper_func _NDL_DirectVideoPlayWithCallback;
 static wrapper_func _NDL_DirectVideoStop;
 static wrapper_func _NDL_DirectVideoSetArea;
-static wrapper_func _NDL_DirectVideoSetCallback;
 
 int NDL_DirectMediaInit(const char *appid, NDLInitCallback cb)
 {
@@ -50,10 +48,8 @@ int NDL_DirectMediaInit(const char *appid, NDLInitCallback cb)
         _NDL_DirectVideoOpen = dlsym(_NDL_directmedia_so, "NDL_DirectVideoOpen");
         _NDL_DirectVideoClose = dlsym(_NDL_directmedia_so, "NDL_DirectVideoClose");
         _NDL_DirectVideoPlay = dlsym(_NDL_directmedia_so, "NDL_DirectVideoPlay");
-        _NDL_DirectVideoPlayWithCallback = dlsym(_NDL_directmedia_so, "NDL_DirectVideoPlayWithCallback");
         _NDL_DirectVideoStop = dlsym(_NDL_directmedia_so, "NDL_DirectVideoStop");
         _NDL_DirectVideoSetArea = dlsym(_NDL_directmedia_so, "NDL_DirectVideoSetArea");
-        _NDL_DirectVideoSetCallback = dlsym(_NDL_directmedia_so, "NDL_DirectVideoSetCallback");
     }
     return (int)_NDL_DirectMediaInit(appid, cb);
 }
@@ -127,11 +123,6 @@ int NDL_DirectVideoPlay(void *data, size_t size)
     return (int)_NDL_DirectVideoPlay(data, size);
 }
 
-int NDL_DirectVideoPlayWithCallback(void *data, size_t size, void *param_3, void *param_4)
-{
-    return (int)_NDL_DirectVideoPlayWithCallback(data, size, param_3, param_4);
-}
-
 int NDL_DirectVideoStop()
 {
     return (int)_NDL_DirectVideoStop();
@@ -140,9 +131,4 @@ int NDL_DirectVideoStop()
 int NDL_DirectVideoSetArea(int x, int y, int w, int h)
 {
     return (int)_NDL_DirectVideoSetArea(x, y, w, h);
-}
-
-int NDL_DirectVideoSetCallback(void (*cb)(void *))
-{
-    return (int)_NDL_DirectVideoSetCallback(cb);
 }

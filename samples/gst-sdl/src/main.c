@@ -806,10 +806,11 @@ void gears_frame(void *userdata)
     gears_draw();
 }
 
+void ndl_init_cb(const char *type);
+
 int main(int argc, char *argv[])
 {
-    REDIR_STDOUT("ndl-gst-wayland");
-
+    REDIR_STDOUT("ndl-gst-sdl");
     gst_init(&argc, &argv);
 
     int w, h;
@@ -831,7 +832,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    if (NDL_DirectMediaInit(APPID, NULL))
+    if (NDL_DirectMediaInit(APPID, ndl_init_cb))
     {
         SDL_Log("Unable to initialize NDL: %s\n", NDL_DirectMediaGetError());
         return 1;
@@ -893,6 +894,10 @@ int main(int argc, char *argv[])
 
     NDL_DirectMediaQuit();
 
+    SDL_GL_DeleteContext(gl_context);
+    SDL_DestroyWindow(window);
+
+    SDL_Quit();
     return 0;
 }
 
@@ -904,4 +909,9 @@ void request_exit()
 int exit_requested()
 {
     return exit_requested_;
+}
+
+void ndl_init_cb(const char *type)
+{
+    SDL_Log("NDL Init: %s\n", type);
 }

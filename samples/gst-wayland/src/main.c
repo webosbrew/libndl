@@ -49,6 +49,8 @@ static int exit_requested_;
 
 static void finalize();
 
+static void ndl_init_callback(const char *str);
+
 static void registryHandler(void *data, struct wl_registry *registry, uint32_t id, const char *interface, uint32_t version)
 {
     if (strcmp(interface, "wl_compositor") == 0)
@@ -238,7 +240,7 @@ int main(int argc, char **argv)
 
     gst_init(&argc, &argv);
 
-    if (NDL_DirectMediaInit(APPID, NULL))
+    if (NDL_DirectMediaInit(APPID, ndl_init_callback))
     {
         g_error(NDL_DirectMediaGetError(), NULL);
         return -1;
@@ -258,9 +260,14 @@ int main(int argc, char **argv)
     gst_sample_finalize();
 
     NDL_DirectMediaQuit();
-    
+
     finalize();
     exit(0);
+}
+
+void ndl_init_callback(const char *str)
+{
+    printf("ndl_init_callback: %s\n", str);
 }
 
 void request_exit()

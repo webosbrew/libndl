@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <stdbool.h>
 
 enum NDL_DIRECTAUDIO_CH_
 {
@@ -70,7 +71,8 @@ enum NDL_DIRECTMEDIA_APP_STATE_
 };
 typedef enum NDL_DIRECTMEDIA_APP_STATE_ NDL_DIRECTMEDIA_APP_STATE_T;
 
-typedef void (*NDLInitCallback)(char *type);
+typedef void (*NDLInitCallback)(const char *type);
+typedef void (*NDLVideoPlayCallback)(unsigned long long);
 
 typedef struct
 {
@@ -134,10 +136,5 @@ int NDL_DirectVideoClose();
  * @return maybe -1 is failed?
  */
 int NDL_DirectVideoPlay(void *data, size_t size);
-/**
- * @return maybe -1 is failed?
- */
-int NDL_DirectVideoPlayWithCallback(void *data, size_t size, void *param_3, void *param_4);
 int NDL_DirectVideoStop();
 int NDL_DirectVideoSetArea(int x, int y, int w, int h);
-int NDL_DirectVideoSetCallback(void (*cb)(void *));
